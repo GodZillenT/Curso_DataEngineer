@@ -1,0 +1,204 @@
+version: 2
+
+models:
+  - name: stg_sql_server_dbo_promos
+    description: ""
+    columns:
+      - name: md5(promo_id)
+        description: ""
+
+      - name: promo_name
+        description: ""
+
+      - name: discount
+        description: ""
+
+      - name: status
+        description: ""
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+        
+  - name: stg_sql_server_dbo_addresses
+    description: ""
+    columns:
+      - name: address_id
+        description: ""
+
+      - name: zipcode
+        description: ""
+
+      - name: address
+        description: ""
+
+      - name: country
+        description: ""
+
+      - name: state
+        description: ""
+
+      - name: _fivetran_deleted
+        description: ""
+
+      - name: _fivetran_synced
+        description: ""
+
+  - name: stg_sql_server_dbo_events
+    description: ""
+    columns:
+      - name: event_id
+        description: ""
+
+      - name: product_id
+        description: ""
+
+      - name: session_id
+        description: ""
+
+      - name: event_type
+        description: ""
+
+      - name: page_url
+        description: ""
+
+      - name: order_id
+        description: ""
+
+      - name: user_id
+        description: ""
+
+      - name: created_at
+        description: ""
+
+      - name: _fivetran_deleted
+        description: ""
+
+      - name: _fivetran_synced
+        description: "" 
+
+  - name: stg_sql_server_dbo_orders
+    description: ""
+    columns:
+      - name: order_id
+        description: ""
+
+      - name: user_id
+        description: ""
+
+      - name: shipping_cost
+        description: ""
+
+      - name: status
+        description: ""
+
+      - name: delivered_at
+        description: ""
+
+      - name: address_id
+        description: ""
+
+      - name: created_at
+        description: ""
+
+      - name: estimated_delivery_at
+        description: ""
+
+      - name: order_cost
+        description: ""
+
+      - name: tracking_id
+        description: ""
+
+      - name: promo_id
+        description: ""
+
+      - name: shipping_service
+        description: ""
+
+      - name: order_total
+        description: ""
+
+      - name: _fivetran_deleted
+        description: ""
+
+      - name: _fivetran_synced
+        description: ""
+
+  - name: stg_sql_server_dbo_products
+    description: ""
+    columns:
+      - name: product_id
+        description: ""
+
+      - name: inventory
+        description: ""
+
+      - name: name
+        description: ""
+
+      - name: price
+        description: ""
+
+      - name: _fivetran_deleted
+        description: ""
+
+      - name: _fivetran_synced
+        description: ""
+
+  - name: stg_sql_server_dbo_users
+    description: ""
+    columns:
+      - name: user_id
+        description: ""
+
+      - name: last_name
+        description: ""
+
+      - name: phone_number
+        description: ""
+
+      - name: updated_at
+        description: ""
+
+      - name: address_id
+        description: ""
+
+      - name: created_at
+        description: ""
+
+      - name: first_name
+        description: ""
+
+      - name: total_orders
+        description: ""
+
+      - name: email
+        description: ""
+
+      - name: _fivetran_deleted
+        description: ""
+
+      - name: _fivetran_synced
+        description: ""
+    
+  - name: stg_sql_server_dbo_order_items
+    description: ""
+    columns:
+      - name: order_id
+        description: ""
+
+      - name: product_id
+        description: ""
+
+      - name: quantity
+        description: ""
+
+      - name: _fivetran_deleted
+        description: ""
+
+      - name: _fivetran_synced
+        description: ""
+    
