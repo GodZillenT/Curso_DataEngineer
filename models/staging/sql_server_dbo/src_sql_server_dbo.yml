@@ -1,0 +1,217 @@
+version: 2
+
+sources:
+  - name: sql_server_dbo
+    description: ""
+    database: dev_bronze_db_alumno21
+    tables:
+      - name: addresses
+        description: "Tabla que aporta informacion sobre la direccion del usuario"
+        columns:
+          - name: address_id
+            description: "Id de la direccion del usuario"
+            tests:
+              - unique
+              - not_null
+          - name: zipcode
+            description: "Codigo postal perteneciente a la direccion "
+          - name: address
+            description: "Descripcion de la direccion del usuario"
+            tests:
+              - not_null
+          - name: country
+            description: "Pais del usuario"
+          - name: state
+            description: "Estado al que pertenece el pais del usuario"
+          - name: _fivetran_deleted
+            description: "Si el campo ha sido borrado"
+          - name: _fivetran_synced
+            description: "Fecha que dice cuando se cargo los datos"
+
+      - name: events
+        description: "Tabla que aporta informacion acerca del tipo de evento en la página web"
+        columns:
+          - name: event_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            description: ""
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
+          - name: session_id
+            description: ""
+          - name: event_type
+            description: "Descripcion del tipo de evento"
+          - name: page_url
+            description: ""
+          - name: order_id
+            description: ""
+          - name: user_id
+            description: ""
+          - name: created_at
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: fivetran_audit
+        description: ""
+        columns:
+          - name: id
+            description: ""
+          - name: message
+            description: ""
+          - name: update_started
+            description: ""
+          - name: update_id
+            description: ""
+          - name: schema
+            description: ""
+          - name: table
+            description: ""
+          - name: start
+            description: ""
+          - name: done
+            description: ""
+          - name: rows_updated_or_inserted
+            description: ""
+          - name: status
+            description: ""
+          - name: progress
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: order_items
+        description: "Tabla que aporta informacion acerca de la cantidad de productos en un pedido"
+        columns:
+          - name: order_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            description: ""
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
+          - name: quantity
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: orders
+        description: "Nuestra tabla de hechos que recoge toda la informacion de cada pedido"
+        columns:
+          - name: order_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  to: source('sql_server_dbo','order_items')
+                  field: order_id
+          - name: user_id
+            description: ""
+          - name: shipping_cost
+            description: ""
+          - name: status
+            description: ""
+          - name: delivered_at
+            description: ""
+          - name: address_id
+            
+            description: ""
+          - name: created_at
+            description: ""
+          - name: estimated_delivery_at
+            description: ""
+          - name: order_cost
+            description: ""
+          - name: tracking_id
+            description: ""
+          - name: promo_id
+            description: ""
+          - name: shipping_service
+            description: ""
+          - name: order_total
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: products
+        description: "Tabla con informacion acerca de productos"
+        columns:
+          - name: product_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: inventory
+            description: ""
+            tests:
+              - positive_values
+          - name: name
+            description: ""
+          - name: price
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: promos
+        description: "Tabla con informacion acerca de las promociones en pedidos"
+        columns:
+          - name: promo_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: discount
+            description: ""
+          - name: status
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: users
+        description: "Tabla con informacion acerca de los usuarios"
+        columns:
+          - name: user_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: last_name
+            description: ""
+          - name: phone_number
+            description: ""
+          - name: updated_at
+            description: ""
+          - name: address_id
+            description: ""
+          - name: created_at
+            description: ""
+          - name: first_name
+            description: ""
+          - name: total_orders
+            description: ""
+          - name: email
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
