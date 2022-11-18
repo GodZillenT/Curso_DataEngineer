@@ -52,6 +52,10 @@ sources:
             description: ""
           - name: user_id
             description: ""
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','users')
+                  field: user_id
           - name: created_at
             description: ""
           - name: _fivetran_deleted
@@ -93,6 +97,9 @@ sources:
           - name: order_id
             description: ""
             tests:
+              - relationships:
+                  to: source('sql_server_dbo','order_items')
+                  field: order_id
               - unique
               - not_null
           - name: product_id
@@ -121,6 +128,10 @@ sources:
                   field: order_id
           - name: user_id
             description: ""
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','users')
+                  field: user_id
           - name: shipping_cost
             description: ""
           - name: status
@@ -140,6 +151,10 @@ sources:
             description: ""
           - name: promo_id
             description: ""
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','promos')
+                  field: promo_id
           - name: shipping_service
             description: ""
           - name: order_total
@@ -203,6 +218,10 @@ sources:
             description: ""
           - name: address_id
             description: ""
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','adresses')
+                  field: address_id
           - name: created_at
             description: ""
           - name: first_name

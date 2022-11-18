@@ -12,11 +12,11 @@ renamed as (
         address,
         country,
         state,
-        _fivetran_deleted,
-        _fivetran_synced
+        _fivetran_deleted as data_removed,
+        _fivetran_synced as date_load
 
     from source
 
 )
 
-select * from renamed
+select * from renamed where address_id != '1'

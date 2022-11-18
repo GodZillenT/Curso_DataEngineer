@@ -10,8 +10,8 @@ renamed as (
         order_id,
         product_id,
         quantity,
-        _fivetran_deleted,
-        _fivetran_synced
+        _fivetran_deleted as data_removed,
+        _fivetran_synced as date_load
 
     from source
 

@@ -16,3 +16,12 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
+union all
+SELECT *
+    md5('') as promo_id,
+    'none_promo' as promo_name,
+    'inactive' as status,
+    0 as discount
+    'false' as data_removed,
+    sysdate() as data_load
+

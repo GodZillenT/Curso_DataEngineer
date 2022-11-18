@@ -8,16 +8,15 @@ renamed as (
 
     select
         user_id,
-        last_name,
-        phone_number,
-        updated_at,
-        address_id,
-        created_at,
         first_name,
-        total_orders,
+        last_name,
+        address_id,
+        phone_number,
         email,
-        _fivetran_deleted,
-        _fivetran_synced
+        CAST(date_trunc('day', created_at) AS DATE) as created_at,
+        CAST(date_trunc('day', updated_at) AS DATE) as updated_at,
+        _fivetran_deleted as data_removed,
+        _fivetran_synced as date_load
 
     from source
 

@@ -9,19 +9,21 @@ renamed as (
     select
         order_id,
         user_id,
-        shipping_cost,
-        status,
-        delivered_at,
+        case when promo_id = '' then md5('')
+        else md5(promo_id)
+        end as promo_id,
         address_id,
-        created_at,
-        estimated_delivery_at,
-        order_cost,
         tracking_id,
-        promo_id,
+        status,
+        CAST(date_trunc('day', created_at) AS DATE) as created_at,
+        delivered_at,
+        estimated_delivery_at,
+        shipping_cost,
+        order_cost,
+        order_total, 
         shipping_service,
-        order_total,
-        _fivetran_deleted,
-        _fivetran_synced
+        _fivetran_deleted as data_removed,
+        _fivetran_synced as date_load
 
     from source
 

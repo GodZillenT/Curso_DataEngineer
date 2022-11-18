@@ -15,8 +15,8 @@ renamed as (
         order_id,
         user_id,
         created_at,
-        _fivetran_deleted,
-        _fivetran_synced
+        _fivetran_deleted as data_removed,
+        _fivetran_synced as date_load
 
     from source
 
