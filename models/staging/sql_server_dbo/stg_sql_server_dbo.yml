@@ -1,19 +1,41 @@
 version: 2
 
 models:
-  - name: stg_sql_server_dbo_promos
+  - name: stg_sql_server_dbo_users
     description: ""
     columns:
-      - name: md5(promo_id)
+      - name: user_id
+        description: "identificador usuario"
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: "nombre usuario"
+        tests:
+          - not_null
+
+      - name: last_name
+        description: "primero apellido del usuario"
+
+      - name: address_id
+        description: "identificador de la direccion del usuario"
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo_addresses')
+              field: address_id
+
+      - name: phone_number
         description: ""
 
-      - name: promo_name
+      - name: email
         description: ""
 
-      - name: discount
+      - name: created_at
         description: ""
+        tests:
 
-      - name: status
+      - name: updated_at
         description: ""
 
       - name: data_removed
@@ -21,17 +43,62 @@ models:
 
       - name: date_load
         description: ""
-        
+  
+  - name: stg_sql_server_dbo_promos
+    description: ""
+    columns:
+      - name: promo_id
+        description: "identificador de promocion"
+        tests:
+          - unique
+          - not_null
+
+      - name: promo_name
+        description: "nombre de la promocion"
+
+      - name: status
+        description: "si esta activa o no la promocion"
+
+      - name: discount
+        description: "el descuento que aplica a esa promocion"
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+  
+  - name: stg_sql_server_dbo_products
+    description: ""
+    columns:
+      - name: product_id
+        description: "identificador producto"
+
+      - name: name
+        description: ""
+
+      - name: price_usd
+        description: "precio en dolares"
+
+      - name: inventory
+        description: ""
+
+      - name: data_remove
+        description: ""
+
+      - name: date_load
+        description: ""
+
   - name: stg_sql_server_dbo_addresses
     description: ""
     columns:
       - name: address_id
         description: ""
 
-      - name: zipcode
+      - name: address
         description: ""
 
-      - name: address
+      - name: zipcode
         description: ""
 
       - name: country
@@ -40,10 +107,34 @@ models:
       - name: state
         description: ""
 
-      - name: _fivetran_deleted
+      - name: data_removed
         description: ""
 
-      - name: _fivetran_synced
+      - name: date_load
+        description: ""
+
+  - name: stg_sql_server_dbo_order_items
+    description: ""
+    columns:
+      - name: order_id
+        description: ""
+
+      - name: product_id
+        description: ""
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo_products')
+              field: product_id
+
+      - name: quantity
+        description: ""
+        tests:
+          - positive_values
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
         description: ""
 
   - name: stg_sql_server_dbo_events
@@ -51,6 +142,13 @@ models:
     columns:
       - name: event_id
         description: ""
+
+      - name: user_id
+        description: ""
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo_users')
+              field: user_id
 
       - name: product_id
         description: ""
@@ -64,141 +162,75 @@ models:
       - name: page_url
         description: ""
 
-      - name: order_id
-        description: ""
-
-      - name: user_id
-        description: ""
-
       - name: created_at
         description: ""
 
-      - name: _fivetran_deleted
+      - name: data_removed
         description: ""
 
-      - name: _fivetran_synced
-        description: "" 
+      - name: date_load
+        description: ""
 
   - name: stg_sql_server_dbo_orders
     description: ""
     columns:
       - name: order_id
         description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_order_items')
+            field: order_id
 
       - name: user_id
         description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_users')
+            field: user_id
 
-      - name: shipping_cost
+      - name: address_id
+        description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_addresses')
+            field: address_id
+
+      - name: tracking_id
         description: ""
 
       - name: status
         description: ""
 
-      - name: delivered_at
+      - name: promo_id
         description: ""
-
-      - name: address_id
-        description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_promos')
+            field: promo_id
 
       - name: created_at
+        description: ""
+
+      - name: delivered_at
         description: ""
 
       - name: estimated_delivery_at
         description: ""
 
-      - name: order_cost
-        description: ""
-
-      - name: tracking_id
-        description: ""
-
-      - name: promo_id
-        description: ""
-
       - name: shipping_service
+        description: ""
+
+      - name: shipping_cost
+        description: ""
+
+      - name: order_cost
         description: ""
 
       - name: order_total
         description: ""
 
-      - name: _fivetran_deleted
+      - name: data_removed
         description: ""
 
-      - name: _fivetran_synced
+      - name: date_load
         description: ""
-
-  - name: stg_sql_server_dbo_products
-    description: ""
-    columns:
-      - name: product_id
-        description: ""
-
-      - name: inventory
-        description: ""
-
-      - name: name
-        description: ""
-
-      - name: price
-        description: ""
-
-      - name: _fivetran_deleted
-        description: ""
-
-      - name: _fivetran_synced
-        description: ""
-
-  - name: stg_sql_server_dbo_users
-    description: ""
-    columns:
-      - name: user_id
-        description: ""
-
-      - name: last_name
-        description: ""
-
-      - name: phone_number
-        description: ""
-
-      - name: updated_at
-        description: ""
-
-      - name: address_id
-        description: ""
-
-      - name: created_at
-        description: ""
-
-      - name: first_name
-        description: ""
-
-      - name: total_orders
-        description: ""
-
-      - name: email
-        description: ""
-
-      - name: _fivetran_deleted
-        description: ""
-
-      - name: _fivetran_synced
-        description: ""
-    
-  - name: stg_sql_server_dbo_order_items
-    description: ""
-    columns:
-      - name: order_id
-        description: ""
-
-      - name: product_id
-        description: ""
-
-      - name: quantity
-        description: ""
-
-      - name: _fivetran_deleted
-        description: ""
-
-      - name: _fivetran_synced
-        description: ""
-    

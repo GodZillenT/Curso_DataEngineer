@@ -6,22 +6,22 @@ WITH src_promos AS (
 
 renamed_casted AS (
     SELECT
-          md5(promo_id)
+        md5(promo_id) as promo_id
         , promo_id as promo_name
-        , discount
         , status
+        , discount
         , _fivetran_deleted AS data_removed
         , _fivetran_synced AS date_load
     FROM src_promos
     )
 
 SELECT * FROM renamed_casted
-union all
-SELECT *
-    md5('') as promo_id,
+UNION ALL
+SELECT 
+
+    md5('') as promo_id,  
     'none_promo' as promo_name,
     'inactive' as status,
-    0 as discount
+    0  as discount,
     'false' as data_removed,
     sysdate() as data_load
-

@@ -8,12 +8,11 @@ renamed as (
 
     select
         event_id,
+        user_id,
         product_id,
         session_id,
         event_type,
-        page_url,
-        order_id,
-        user_id,
+        page_url,  
         created_at,
         _fivetran_deleted as data_removed,
         _fivetran_synced as date_load

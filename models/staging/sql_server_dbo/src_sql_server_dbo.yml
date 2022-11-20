@@ -11,7 +11,6 @@ sources:
           - name: address_id
             description: "Id de la direccion del usuario"
             tests:
-              - unique
               - not_null
           - name: zipcode
             description: "Codigo postal perteneciente a la direccion "
@@ -38,12 +37,10 @@ sources:
               - not_null
           - name: product_id
             description: ""
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','products')
-                  field: product_id
           - name: session_id
             description: ""
+            tests:
+              - not_null
           - name: event_type
             description: "Descripcion del tipo de evento"
           - name: page_url
@@ -52,12 +49,10 @@ sources:
             description: ""
           - name: user_id
             description: ""
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','users')
-                  field: user_id
           - name: created_at
             description: ""
+            tests:
+              - not_null
           - name: _fivetran_deleted
             description: ""
           - name: _fivetran_synced
@@ -96,20 +91,12 @@ sources:
         columns:
           - name: order_id
             description: ""
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','order_items')
-                  field: order_id
-              - unique
-              - not_null
           - name: product_id
             description: ""
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','products')
-                  field: product_id
           - name: quantity
             description: ""
+            tests:
+              - not_null
           - name: _fivetran_deleted
             description: ""
           - name: _fivetran_synced
@@ -123,24 +110,23 @@ sources:
             tests:
               - unique
               - not_null
-              - relationships:
-                  to: source('sql_server_dbo','order_items')
-                  field: order_id
           - name: user_id
             description: ""
             tests:
+              - not_null
               - relationships:
                   to: source('sql_server_dbo','users')
                   field: user_id
           - name: shipping_cost
-            description: ""
+            description: "Coste del envio"
           - name: status
-            description: ""
+            description: "Estado del pedido"
           - name: delivered_at
             description: ""
           - name: address_id
-            
             description: ""
+            tests:
+              - not_null
           - name: created_at
             description: ""
           - name: estimated_delivery_at
@@ -152,9 +138,7 @@ sources:
           - name: promo_id
             description: ""
             tests:
-              - relationships:
-                  to: source('sql_server_dbo','promos')
-                  field: promo_id
+              - not_null
           - name: shipping_service
             description: ""
           - name: order_total
@@ -173,13 +157,15 @@ sources:
               - unique
               - not_null
           - name: inventory
-            description: ""
+            description: "Cantidad de stock para cada producto"
             tests:
               - positive_values
           - name: name
-            description: ""
+            description: "Nombre del producto"
           - name: price
             description: ""
+            tests:
+              - not_null
           - name: _fivetran_deleted
             description: ""
           - name: _fivetran_synced
@@ -190,9 +176,6 @@ sources:
         columns:
           - name: promo_id
             description: ""
-            tests:
-              - unique
-              - not_null
           - name: discount
             description: ""
           - name: status
@@ -218,14 +201,12 @@ sources:
             description: ""
           - name: address_id
             description: ""
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','adresses')
-                  field: address_id
           - name: created_at
             description: ""
           - name: first_name
             description: ""
+            tests:
+              - not_null
           - name: total_orders
             description: ""
           - name: email

@@ -8,8 +8,8 @@ renamed as (
 
     select
         address_id,
-        zipcode,
         address,
+        zipcode,
         country,
         state,
         _fivetran_deleted as data_removed,

@@ -1,4 +1,4 @@
-{% set event_types = obtener_tipo_evento() %}
+{% set event_types = obtener_tipo_eventos() %}
 WITH stg_events AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo_events') }}
