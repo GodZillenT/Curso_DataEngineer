@@ -11,11 +11,11 @@ renamed as (
         user_id,
         address_id,
         tracking_id,
-        status,
+        status as status_order,
         case when promo_id = '' then md5('')
         else md5(promo_id)
         end as promo_id,
-        CAST(date_trunc('day', created_at) AS DATE) as created_at,
+        created_at,
         delivered_at,
         estimated_delivery_at,
         shipping_service,

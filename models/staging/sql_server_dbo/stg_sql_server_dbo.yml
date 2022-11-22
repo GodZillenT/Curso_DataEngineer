@@ -48,7 +48,7 @@ models:
     description: ""
     columns:
       - name: promo_id
-        description: "identificador de promocion"
+        description: "identificador hasheado con md5 para el identificador de promo"
         tests:
           - unique
           - not_null
@@ -221,13 +221,13 @@ models:
         description: ""
 
       - name: shipping_cost
-        description: ""
+        description: "pasa a ser numeric"
 
       - name: order_cost
-        description: ""
+        description: "pasa a ser numeric"
 
       - name: order_total
-        description: ""
+        description: "pasa a ser numeric"
 
       - name: data_removed
         description: ""

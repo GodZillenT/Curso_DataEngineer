@@ -3,7 +3,12 @@ version: 2
 sources:
   - name: sql_server_dbo
     description: ""
-    database: dev_bronze_db_alumno21
+    database: |  
+        {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'pro'-%} pro_bronze_db_alumno21  
+        {%- else -%} {{target.database}}_bronze_db_alumno21
+        {%- endif -%}
     tables:
       - name: addresses
         description: "Tabla que aporta informacion sobre la direccion del usuario"
@@ -23,9 +28,9 @@ sources:
           - name: state
             description: "Estado al que pertenece el pais del usuario"
           - name: _fivetran_deleted
-            description: "Si el campo ha sido borrado"
+            description: "Campo para rastrear si el campo ha sido borrado"
           - name: _fivetran_synced
-            description: "Fecha que dice cuando se cargo los datos"
+            description: "Fecha que dice cuando se cargaron los datos"
 
       - name: events
         description: "Tabla que aporta informacion acerca del tipo de evento en la página web"
@@ -91,6 +96,11 @@ sources:
         columns:
           - name: order_id
             description: ""
+            tests:
+              - not_null
+              - relationships:
+                  to: ref('sql_server_dbo', 'orders')
+                  field: order_id
           - name: product_id
             description: ""
           - name: quantity
@@ -133,6 +143,8 @@ sources:
             description: ""
           - name: order_cost
             description: ""
+            tests:
+              - not_null
           - name: tracking_id
             description: ""
           - name: promo_id
@@ -143,6 +155,8 @@ sources:
             description: ""
           - name: order_total
             description: ""
+            tests: 
+              - not_null
           - name: _fivetran_deleted
             description: ""
           - name: _fivetran_synced
@@ -176,10 +190,14 @@ sources:
         columns:
           - name: promo_id
             description: ""
+            tests:
+              - unique
           - name: discount
             description: ""
           - name: status
             description: ""
+            tests:
+              - not_null
           - name: _fivetran_deleted
             description: ""
           - name: _fivetran_synced
@@ -197,10 +215,15 @@ sources:
             description: ""
           - name: phone_number
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex: 
+                  regex: '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'
           - name: updated_at
             description: ""
           - name: address_id
             description: ""
+            tests:
+              - not_null
           - name: created_at
             description: ""
           - name: first_name
@@ -211,6 +234,10 @@ sources:
             description: ""
           - name: email
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex: 
+                  regex: '^[^@]+@[^@]+\.[a-zA-Z]{2,}$'
+                  
           - name: _fivetran_deleted
             description: ""
           - name: _fivetran_synced
