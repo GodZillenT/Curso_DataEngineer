@@ -1,0 +1,236 @@
+version: 2
+
+models:
+  - name: stg_sql_server_dbo_users
+    description: ""
+    columns:
+      - name: user_id
+        description: "identificador usuario"
+        tests:
+          - unique
+          - not_null
+
+      - name: first_name
+        description: "nombre usuario"
+        tests:
+          - not_null
+
+      - name: last_name
+        description: "primero apellido del usuario"
+
+      - name: address_id
+        description: "identificador de la direccion del usuario"
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo_addresses')
+              field: address_id
+
+      - name: phone_number
+        description: ""
+
+      - name: email
+        description: ""
+
+      - name: created_at
+        description: ""
+        tests:
+
+      - name: updated_at
+        description: ""
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+  
+  - name: stg_sql_server_dbo_promos
+    description: ""
+    columns:
+      - name: promo_id
+        description: "identificador hasheado con md5 para el identificador de promo"
+        tests:
+          - unique
+          - not_null
+
+      - name: promo_name
+        description: "nombre de la promocion"
+
+      - name: status
+        description: "si esta activa o no la promocion"
+
+      - name: discount
+        description: "el descuento que aplica a esa promocion"
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+  
+  - name: stg_sql_server_dbo_products
+    description: ""
+    columns:
+      - name: product_id
+        description: "identificador producto"
+
+      - name: name
+        description: ""
+
+      - name: price_usd
+        description: "precio en dolares"
+
+      - name: inventory
+        description: ""
+
+      - name: data_remove
+        description: ""
+
+      - name: date_load
+        description: ""
+
+  - name: stg_sql_server_dbo_addresses
+    description: ""
+    columns:
+      - name: address_id
+        description: ""
+
+      - name: address
+        description: ""
+
+      - name: zipcode
+        description: ""
+
+      - name: country
+        description: ""
+
+      - name: state
+        description: ""
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+
+  - name: stg_sql_server_dbo_order_items
+    description: ""
+    columns:
+      - name: order_id
+        description: ""
+
+      - name: product_id
+        description: ""
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo_products')
+              field: product_id
+
+      - name: quantity
+        description: ""
+        tests:
+          - positive_values
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+
+  - name: stg_sql_server_dbo_events
+    description: ""
+    columns:
+      - name: event_id
+        description: ""
+
+      - name: user_id
+        description: ""
+        tests:
+          - relationships:
+              to: ref('stg_sql_server_dbo_users')
+              field: user_id
+
+      - name: product_id
+        description: ""
+
+      - name: session_id
+        description: ""
+
+      - name: event_type
+        description: ""
+
+      - name: page_url
+        description: ""
+
+      - name: created_at
+        description: ""
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""
+
+  - name: stg_sql_server_dbo_orders
+    description: ""
+    columns:
+      - name: order_id
+        description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_order_items')
+            field: order_id
+
+      - name: user_id
+        description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_users')
+            field: user_id
+
+      - name: address_id
+        description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_addresses')
+            field: address_id
+
+      - name: tracking_id
+        description: ""
+
+      - name: status
+        description: ""
+
+      - name: promo_id
+        description: ""
+        tests:
+        - relationships:
+            to: ref('stg_sql_server_dbo_promos')
+            field: promo_id
+
+      - name: created_at
+        description: ""
+
+      - name: delivered_at
+        description: ""
+
+      - name: estimated_delivery_at
+        description: ""
+
+      - name: shipping_service
+        description: ""
+
+      - name: shipping_cost
+        description: "pasa a ser numeric"
+
+      - name: order_cost
+        description: "pasa a ser numeric"
+
+      - name: order_total
+        description: "pasa a ser numeric"
+
+      - name: data_removed
+        description: ""
+
+      - name: date_load
+        description: ""

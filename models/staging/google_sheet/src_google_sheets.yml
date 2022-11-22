@@ -1,0 +1,61 @@
+version: 2
+
+sources:
+  - name: google_sheets
+    description: ""
+    database: |
+        {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno21
+        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'pro'-%} pro_bronze_db_alumno21  
+        {%- else -%} {{target.database}}_bronze_db_alumno21
+        {%- endif -%}
+    tables:
+      - name: budget
+        description: "Datos acerca de los presupuestos de cada producto"
+        columns:
+          - name: _row
+            description: ""    
+            tests: 
+              - not_null
+              - unique
+          - name: product_id
+            description: ""
+          - name: quantity
+            description: "Cantidad del producto que se espera vender"
+            tests:
+             - not_null
+             - positive_values
+          - name: month
+            description: ""
+            tests:
+              - not_null
+          - name: _fivetran_synced
+            description: ""
+
+      - name: fivetran_audit
+        description: ""
+        columns:
+          - name: id
+            description: ""
+          - name: message
+            description: ""
+          - name: update_started
+            description: ""
+          - name: update_id
+            description: ""
+          - name: schema
+            description: ""
+          - name: table
+            description: ""
+          - name: start
+            description: ""
+          - name: done
+            description: ""
+          - name: rows_updated_or_inserted
+            description: ""
+          - name: status
+            description: ""
+          - name: progress
+            description: ""
+          - name: _fivetran_synced
+            description: ""

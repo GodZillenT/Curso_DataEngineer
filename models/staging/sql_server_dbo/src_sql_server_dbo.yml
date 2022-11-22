@@ -1,0 +1,244 @@
+version: 2
+
+sources:
+  - name: sql_server_dbo
+    description: ""
+    database: |  
+        {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'pro'-%} pro_bronze_db_alumno21  
+        {%- else -%} {{target.database}}_bronze_db_alumno21
+        {%- endif -%}
+    tables:
+      - name: addresses
+        description: "Tabla que aporta informacion sobre la direccion del usuario"
+        columns:
+          - name: address_id
+            description: "Id de la direccion del usuario"
+            tests:
+              - not_null
+          - name: zipcode
+            description: "Codigo postal perteneciente a la direccion "
+          - name: address
+            description: "Descripcion de la direccion del usuario"
+            tests:
+              - not_null
+          - name: country
+            description: "Pais del usuario"
+          - name: state
+            description: "Estado al que pertenece el pais del usuario"
+          - name: _fivetran_deleted
+            description: "Campo para rastrear si el campo ha sido borrado"
+          - name: _fivetran_synced
+            description: "Fecha que dice cuando se cargaron los datos"
+
+      - name: events
+        description: "Tabla que aporta informacion acerca del tipo de evento en la página web"
+        columns:
+          - name: event_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            description: ""
+          - name: session_id
+            description: ""
+            tests:
+              - not_null
+          - name: event_type
+            description: "Descripcion del tipo de evento"
+          - name: page_url
+            description: ""
+          - name: order_id
+            description: ""
+          - name: user_id
+            description: ""
+          - name: created_at
+            description: ""
+            tests:
+              - not_null
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: fivetran_audit
+        description: ""
+        columns:
+          - name: id
+            description: ""
+          - name: message
+            description: ""
+          - name: update_started
+            description: ""
+          - name: update_id
+            description: ""
+          - name: schema
+            description: ""
+          - name: table
+            description: ""
+          - name: start
+            description: ""
+          - name: done
+            description: ""
+          - name: rows_updated_or_inserted
+            description: ""
+          - name: status
+            description: ""
+          - name: progress
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: order_items
+        description: "Tabla que aporta informacion acerca de la cantidad de productos en un pedido"
+        columns:
+          - name: order_id
+            description: ""
+            tests:
+              - not_null
+              - relationships:
+                  to: ref('sql_server_dbo', 'orders')
+                  field: order_id
+          - name: product_id
+            description: ""
+          - name: quantity
+            description: ""
+            tests:
+              - not_null
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: orders
+        description: "Nuestra tabla de hechos que recoge toda la informacion de cada pedido"
+        columns:
+          - name: order_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: user_id
+            description: ""
+            tests:
+              - not_null
+              - relationships:
+                  to: source('sql_server_dbo','users')
+                  field: user_id
+          - name: shipping_cost
+            description: "Coste del envio"
+          - name: status
+            description: "Estado del pedido"
+          - name: delivered_at
+            description: ""
+          - name: address_id
+            description: ""
+            tests:
+              - not_null
+          - name: created_at
+            description: ""
+          - name: estimated_delivery_at
+            description: ""
+          - name: order_cost
+            description: ""
+            tests:
+              - not_null
+          - name: tracking_id
+            description: ""
+          - name: promo_id
+            description: ""
+            tests:
+              - not_null
+          - name: shipping_service
+            description: ""
+          - name: order_total
+            description: ""
+            tests: 
+              - not_null
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: products
+        description: "Tabla con informacion acerca de productos"
+        columns:
+          - name: product_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: inventory
+            description: "Cantidad de stock para cada producto"
+            tests:
+              - positive_values
+          - name: name
+            description: "Nombre del producto"
+          - name: price
+            description: ""
+            tests:
+              - not_null
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: promos
+        description: "Tabla con informacion acerca de las promociones en pedidos"
+        columns:
+          - name: promo_id
+            description: ""
+            tests:
+              - unique
+          - name: discount
+            description: ""
+          - name: status
+            description: ""
+            tests:
+              - not_null
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: users
+        description: "Tabla con informacion acerca de los usuarios"
+        columns:
+          - name: user_id
+            description: ""
+            tests:
+              - unique
+              - not_null
+          - name: last_name
+            description: ""
+          - name: phone_number
+            description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex: 
+                  regex: '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'
+          - name: updated_at
+            description: ""
+          - name: address_id
+            description: ""
+            tests:
+              - not_null
+          - name: created_at
+            description: ""
+          - name: first_name
+            description: ""
+            tests:
+              - not_null
+          - name: total_orders
+            description: ""
+          - name: email
+            description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_match_regex: 
+                  regex: '^[^@]+@[^@]+\.[a-zA-Z]{2,}$'
+                  
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
