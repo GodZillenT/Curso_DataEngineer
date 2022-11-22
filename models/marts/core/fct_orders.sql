@@ -12,11 +12,11 @@ renamed_casted AS (
         , user_id 
         , promo_id
         , address_id
-        , created_at,
-        {%- for st_order in status_orders  %}
-        sum(case when status_order = '{{st_order}}' then 1 end) as {{st_order}}_amount
-        {%- if not loop.last %},{% endif -%}
-        {% endfor %}
+        , created_at
+       -- {%- for st_order in status_orders  %}
+       -- sum(case when status_order = '{{st_order}}' then 1 end) as {{st_order}}_amount
+       -- {%- if not loop.last %},{% endif -%}
+        --{% endfor %}
         , shipping_cost
         , order_cost
         , order_total
@@ -28,7 +28,7 @@ renamed_casted AS (
         , data_removed
         , date_load
     FROM stg_orders
-    GROUP BY 1,2,3,4,5,8,9,10,11,12,13,14,15,16,17,18
+
     )
 
 SELECT * FROM renamed_casted
