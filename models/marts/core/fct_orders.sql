@@ -13,10 +13,6 @@ renamed_casted AS (
         , promo_id
         , address_id
         , created_at
-       -- {%- for st_order in status_orders  %}
-       -- sum(case when status_order = '{{st_order}}' then 1 end) as {{st_order}}_amount
-       -- {%- if not loop.last %},{% endif -%}
-        --{% endfor %}
         , shipping_cost
         , order_cost
         , order_total
