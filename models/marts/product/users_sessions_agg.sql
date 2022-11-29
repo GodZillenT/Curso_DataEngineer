@@ -1,17 +1,16 @@
 
 
-with stg_events as (
+with fct_events as (
     SELECT *
-    FROM {{ref('stg_sql_server_dbo_events')}}
+    FROM {{ref('fct_events')}}
 ),
 
-stg_users as (
+dim_users as (
     SELECT *
-    FROM {{ref('stg_sql_server_dbo_users')}}
+    FROM {{ref('dim_users')}}
 ),
 
 usuario_sesion as(
-    
     SELECT
        distinct session_id,
        U.user_id,
@@ -21,8 +20,8 @@ usuario_sesion as(
        max(E.created_at) as last_event_time_utc,
        DATEDIFF('minute',first_event_time_utc,last_event_time_utc) as session_length_minutes,
        {{column_values_to_metrics(ref('stg_sql_server_dbo_events'),'event_type')}}
-       FROM stg_users U
-       JOIN stg_events E 
+       FROM dim_users U
+       JOIN fct_events E 
        ON U.user_id = E.user_id
        {{dbt_utils.group_by(4) }}
        

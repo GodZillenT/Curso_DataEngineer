@@ -2,7 +2,7 @@
 
 {{
     config(
-      target_schema='snapshots',
+      
       unique_key='_row',
 
       strategy='timestamp',

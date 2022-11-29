@@ -12,26 +12,26 @@ sources:
         {%- endif -%}
     tables:
       - name: budget
-        description: "Datos acerca de los presupuestos de cada producto"
+        description: "Tabla de presupuestos para los diferentes productos en un mes concreto"
         columns:
           - name: _row
-            description: ""    
+            description: "Numero de fila que identifica al presupuesto"    
             tests: 
               - not_null
               - unique
           - name: product_id
-            description: ""
+            description: "Identificador del producto"
           - name: quantity
             description: "Cantidad del producto que se espera vender"
             tests:
              - not_null
              - positive_values
           - name: month
-            description: ""
+            description: "Mes del que queremos saber su presupuesto"
             tests:
               - not_null
           - name: _fivetran_synced
-            description: ""
+            description: "Campo proveniente de fivetran que nos permite saber la ultima fecha de actualizacion de los datos"
 
       - name: fivetran_audit
         description: ""

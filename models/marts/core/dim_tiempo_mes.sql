@@ -17,7 +17,7 @@ with date as (
 
 
 select
-    date_month as fecha_forecast
+    date_month as id_fecha
     , year(date_month)*10000+month(date_month) as id_date
     , year(date_month) as anio
     , month(date_month) as mes

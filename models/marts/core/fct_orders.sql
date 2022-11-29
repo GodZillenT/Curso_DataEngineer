@@ -17,6 +17,7 @@ renamed_casted AS (
         , order_cost
         , order_total
         , tracking_id
+        , status_order
         , shipping_service
         , estimated_delivery_at
         , delivered_at

@@ -12,7 +12,7 @@ sources:
         {%- endif -%}
     tables:
       - name: addresses
-        description: "Tabla que aporta informacion sobre la direccion del usuario"
+        description: "Tabla que aporta informacion acerca de la direccion del usuario"
         columns:
           - name: address_id
             description: "Id de la direccion del usuario"
@@ -37,32 +37,32 @@ sources:
         description: "Tabla que aporta informacion acerca del tipo de evento en la página web"
         columns:
           - name: event_id
-            description: ""
+            description: "Id unico que identifica al evento"
             tests:
               - unique
               - not_null
           - name: product_id
-            description: ""
+            description: "Id del producto que se añadio a la cesta"
           - name: session_id
-            description: ""
+            description: "Id de la sesion del usuario"
             tests:
               - not_null
           - name: event_type
             description: "Descripcion del tipo de evento"
           - name: page_url
-            description: ""
+            description: "Url de la pagina"
           - name: order_id
-            description: ""
+            description: "Id del pedido"
           - name: user_id
-            description: ""
+            description: "Id del usuario que produjo el evento"
           - name: created_at
             description: ""
             tests:
               - not_null
           - name: _fivetran_deleted
-            description: ""
+            description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
-            description: ""
+            description: "Ultima fecha de actualizacion del campo"
 
       - name: fivetran_audit
         description: ""
@@ -96,22 +96,22 @@ sources:
         description: "Tabla que aporta informacion acerca de la cantidad de productos en un pedido"
         columns:
           - name: order_id
-            description: ""
+            description: "Id del pedido"
             tests:
               - not_null
               - relationships:
                   to: ref('sql_server_dbo', 'orders')
                   field: order_id
           - name: product_id
-            description: ""
+            description: "Id del producto "
           - name: quantity
-            description: ""
+            description: "Cantidad de un producto en un pedido"
             tests:
               - not_null
           - name: _fivetran_deleted
-            description: ""
+            description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
-            description: ""
+            description: "Ultima fecha de actualizacion del campo"
 
       - name: orders
         description: "Nuestra tabla de hechos que recoge toda la informacion de cada pedido"
@@ -159,9 +159,9 @@ sources:
             tests: 
               - not_null
           - name: _fivetran_deleted
-            description: ""
+            description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
-            description: ""
+            description: "Ultima fecha de actualizacion del campo"
 
       - name: products
         description: "Tabla con informacion acerca de productos"
@@ -182,9 +182,9 @@ sources:
             tests:
               - not_null
           - name: _fivetran_deleted
-            description: ""
+            description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
-            description: ""
+            description: "Ultima fecha de actualizacion del campo"
 
       - name: promos
         description: "Tabla con informacion acerca de las promociones en pedidos"
@@ -200,46 +200,46 @@ sources:
             tests:
               - not_null
           - name: _fivetran_deleted
-            description: ""
+            description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
-            description: ""
+            description: "Ultima fecha de actualizacion del campo"
 
       - name: users
         description: "Tabla con informacion acerca de los usuarios"
         columns:
           - name: user_id
-            description: ""
+            description: "Id de usuario"
             tests:
               - unique
               - not_null
           - name: last_name
-            description: ""
+            description: "Apellido del usuario"
           - name: phone_number
-            description: ""
+            description: "Numero de telefono del usuario"
             tests:
               - dbt_expectations.expect_column_values_to_match_regex: 
                   regex: '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'
           - name: updated_at
-            description: ""
+            description: "Ultima fecha de actualizacion del usuario"
           - name: address_id
-            description: ""
+            description: "Id de la direccion del usuario"
             tests:
               - not_null
           - name: created_at
-            description: ""
+            description: "Fecha de creacion del usuario"
           - name: first_name
-            description: ""
+            description: "Nombre del usuario"
             tests:
               - not_null
           - name: total_orders
-            description: ""
+            description: "Pedidos del usuario"
           - name: email
-            description: ""
+            description: "Email del usuario"
             tests:
               - dbt_expectations.expect_column_values_to_match_regex: 
                   regex: '^[^@]+@[^@]+\.[a-zA-Z]{2,}$'
                   
           - name: _fivetran_deleted
-            description: ""
+            description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
-            description: ""
+            description: "Ultima fecha de actualizacion del campo"
