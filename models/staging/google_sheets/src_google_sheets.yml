@@ -6,7 +6,7 @@ sources:
     schema: google_sheets 
     database: |
         {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno21
-        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'ci' -%} pro_bronze_db_alumno21 
         {%- elif target.name == 'pro'-%} pro_bronze_db_alumno21  
         {%- else -%} {{target.database}}_bronze_db_alumno21
         {%- endif -%}
@@ -21,6 +21,8 @@ sources:
               - unique
           - name: product_id
             description: "Identificador del producto"
+            tests:
+              - not_null
           - name: quantity
             description: "Cantidad del producto que se espera vender"
             tests:
@@ -32,31 +34,3 @@ sources:
               - not_null
           - name: _fivetran_synced
             description: "Campo proveniente de fivetran que nos permite saber la ultima fecha de actualizacion de los datos"
-
-      - name: fivetran_audit
-        description: ""
-        columns:
-          - name: id
-            description: ""
-          - name: message
-            description: ""
-          - name: update_started
-            description: ""
-          - name: update_id
-            description: ""
-          - name: schema
-            description: ""
-          - name: table
-            description: ""
-          - name: start
-            description: ""
-          - name: done
-            description: ""
-          - name: rows_updated_or_inserted
-            description: ""
-          - name: status
-            description: ""
-          - name: progress
-            description: ""
-          - name: _fivetran_synced
-            description: ""

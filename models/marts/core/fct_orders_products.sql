@@ -9,12 +9,17 @@ stg_order_items AS(
     FROM {{ ref('stg_sql_server_dbo_order_items')}}
 ),
 
+stg_promos AS(
+    SELECT *
+    FROM {{ ref('stg_sql_server_dbo_promos')}}
+),
+
 
 renamed_casted AS (
     SELECT
         OT.order_id 
         , user_id 
-        , promo_id
+        , O.promo_id
         , address_id
         , created_at
         , status_order
@@ -33,6 +38,8 @@ renamed_casted AS (
     FROM stg_orders O
     JOIN stg_order_items OT
     ON O.order_id = OT.order_id
+    JOIN stg_promos P
+    ON O.promo_id = P.promo_id
 
     )
 

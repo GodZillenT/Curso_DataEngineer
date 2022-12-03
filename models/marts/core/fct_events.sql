@@ -11,7 +11,7 @@ renamed_casted AS (
         user_id,
         product_id,
         session_id,
-        event_type,
+        md5(event_type) as type_event_id,
         page_url,  
         created_at,
         data_removed,

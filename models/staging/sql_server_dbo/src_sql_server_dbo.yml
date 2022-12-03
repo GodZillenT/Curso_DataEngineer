@@ -6,7 +6,7 @@ sources:
     schema: sql_server_dbo
     database: |  
         {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno21 
-        {%- elif target.name == 'ci' -%} dev_bronze_db_alumno21 
+        {%- elif target.name == 'ci' -%} pro_bronze_db_alumno21 
         {%- elif target.name == 'pro'-%} pro_bronze_db_alumno21  
         {%- else -%} {{target.database}}_bronze_db_alumno21
         {%- endif -%}
@@ -18,18 +18,33 @@ sources:
             description: "Id de la direccion del usuario"
             tests:
               - not_null
+              - unique
           - name: zipcode
             description: "Codigo postal perteneciente a la direccion "
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: number   
           - name: address
             description: "Descripcion de la direccion del usuario"
             tests:
               - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar   
           - name: country
             description: "Pais del usuario"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar 
           - name: state
             description: "Estado al que pertenece el pais del usuario"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar   
           - name: _fivetran_deleted
-            description: "Campo para rastrear si el campo ha sido borrado"
+            description: "Campo para saber si el campo ha sido borrado"
           - name: _fivetran_synced
             description: "Fecha que dice cuando se cargaron los datos"
 
@@ -37,7 +52,7 @@ sources:
         description: "Tabla que aporta informacion acerca del tipo de evento en la página web"
         columns:
           - name: event_id
-            description: "Id unico que identifica al evento"
+            description: "Id que identifica al evento"
             tests:
               - unique
               - not_null
@@ -49,51 +64,35 @@ sources:
               - not_null
           - name: event_type
             description: "Descripcion del tipo de evento"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar        
           - name: page_url
             description: "Url de la pagina"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar
           - name: order_id
             description: "Id del pedido"
           - name: user_id
             description: "Id del usuario que produjo el evento"
-          - name: created_at
-            description: ""
             tests:
               - not_null
+          - name: created_at
+            description: "Timestamp de creacion del usuario"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: TIMESTAMP_NTZ
           - name: _fivetran_deleted
             description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
             description: "Ultima fecha de actualizacion del campo"
 
-      - name: fivetran_audit
-        description: ""
-        columns:
-          - name: id
-            description: ""
-          - name: message
-            description: ""
-          - name: update_started
-            description: ""
-          - name: update_id
-            description: ""
-          - name: schema
-            description: ""
-          - name: table
-            description: ""
-          - name: start
-            description: ""
-          - name: done
-            description: ""
-          - name: rows_updated_or_inserted
-            description: ""
-          - name: status
-            description: ""
-          - name: progress
-            description: ""
-          - name: _fivetran_synced
-            description: ""
-
       - name: order_items
-        description: "Tabla que aporta informacion acerca de la cantidad de productos en un pedido"
+        description: "Tabla que aporta informacion acerca de las lineas de pedido de un pedido en concreto"
         columns:
           - name: order_id
             description: "Id del pedido"
@@ -108,6 +107,9 @@ sources:
             description: "Cantidad de un producto en un pedido"
             tests:
               - not_null
+              - positive_values
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: number
           - name: _fivetran_deleted
             description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
@@ -117,12 +119,12 @@ sources:
         description: "Nuestra tabla de hechos que recoge toda la informacion de cada pedido"
         columns:
           - name: order_id
-            description: ""
+            description: "Id del pedido"
             tests:
               - unique
               - not_null
           - name: user_id
-            description: ""
+            description: "Id del usuario"
             tests:
               - not_null
               - relationships:
@@ -130,22 +132,39 @@ sources:
                   field: user_id
           - name: shipping_cost
             description: "Coste del envio"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
           - name: status
             description: "Estado del pedido"
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar 
           - name: delivered_at
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: TIMESTAMP_TZ
           - name: address_id
             description: ""
             tests:
               - not_null
           - name: created_at
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: TIMESTAMP_TZ
           - name: estimated_delivery_at
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: TIMESTAMP_TZ
           - name: order_cost
             description: ""
             tests:
               - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
           - name: tracking_id
             description: ""
           - name: promo_id
@@ -154,10 +173,16 @@ sources:
               - not_null
           - name: shipping_service
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar
           - name: order_total
             description: ""
-            tests: 
+            tests:
               - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: float
+              
           - name: _fivetran_deleted
             description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
@@ -195,10 +220,16 @@ sources:
               - unique
           - name: discount
             description: ""
+            tests:
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: number
+              
           - name: status
             description: ""
             tests:
               - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar
           - name: _fivetran_deleted
             description: "Campo true/false que nos indica si el campo en cuestion ha sido borrado"
           - name: _fivetran_synced
@@ -214,6 +245,8 @@ sources:
               - not_null
           - name: last_name
             description: "Apellido del usuario"
+            tests:
+              - not_null
           - name: phone_number
             description: "Numero de telefono del usuario"
             tests:
@@ -221,16 +254,29 @@ sources:
                   regex: '^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$'
           - name: updated_at
             description: "Ultima fecha de actualizacion del usuario"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: TIMESTAMP_NTZ
           - name: address_id
             description: "Id de la direccion del usuario"
             tests:
               - not_null
+              - relationships:
+                  to: ref('sql_server_dbo', 'addresses')
+                  field: address_id
           - name: created_at
             description: "Fecha de creacion del usuario"
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: TIMESTAMP_NTZ
           - name: first_name
             description: "Nombre del usuario"
             tests:
               - not_null
+              - dbt_expectations.expect_column_values_to_be_of_type:
+                  column_type: varchar
           - name: total_orders
             description: "Pedidos del usuario"
           - name: email

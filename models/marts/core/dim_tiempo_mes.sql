@@ -17,14 +17,12 @@ with date as (
 
 
 select
-    date_month as id_fecha
-    , year(date_month)*10000+month(date_month) as id_date
+
+      year(date_month)*100+month(date_month) as id_anio_mes
+    , weekiso(date_month) as semana
     , year(date_month) as anio
     , month(date_month) as mes
     ,monthname(date_month) as desc_mes
-    , year(date_month)*100+month(date_month) as id_anio_mes
-    , year(date_month)||weekiso(date_month) as anio_semana
-    , weekiso(date_month) as semana
     , case when mes < 7 then 1
       else 2
       end as semestre

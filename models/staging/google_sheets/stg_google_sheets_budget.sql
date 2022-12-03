@@ -5,7 +5,7 @@
     }}
 
 
-WITH stg_budget_products AS (
+WITH stg_budget AS (
     SELECT * 
     FROM {{ source('google_sheets','budget') }}
     ),
@@ -14,10 +14,10 @@ renamed_casted AS (
     SELECT
           _row
         , product_id
-        , month
+        , month as date_id
         , quantity 
-        , _fivetran_synced as date_load
-    FROM stg_budget_products
+        , _fivetran_synced
+    FROM stg_budget
     )
 
 SELECT * FROM renamed_casted

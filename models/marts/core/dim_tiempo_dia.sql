@@ -17,7 +17,7 @@ with date as (
 
 
 select
-      date_day as id_fecha
+      date_day as date_id
     , year(date_day)*10000+month(date_day)*100+day(date_day) as id_date
     , year(date_day) as anio
     , month(date_day) as mes
@@ -31,7 +31,6 @@ select
            when dayofweek(date_day) = 6 then 'Saturday'
        else 'Sunday'
        end as dia_semana
-    , year(date_day)*100+month(date_day) as id_anio_mes
     , date_day-1 as dia_previo
     , year(date_day)||weekiso(date_day)||dayofweek(date_day) as anio_semana_dia
     , weekiso(date_day) as semana
