@@ -2,7 +2,7 @@
 
 {{
     config(
-      
+      materialized='table',
       unique_key='_row',
       strategy='timestamp',
       updated_at='_fivetran_synced',

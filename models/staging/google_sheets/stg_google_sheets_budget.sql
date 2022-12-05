@@ -1,29 +1,29 @@
 {{ config(
     materialized='incremental',
-    unique_key = '_row'
+    unique_key = 'budget_id'
     ) 
     }}
-
-
-WITH stg_budget AS (
+--Creamos la tabla CTE desde donde accede a los datos--
+WITH src_budget_products AS (
     SELECT * 
-    FROM {{ source('google_sheets','budget') }}
+    FROM {{ source('google_sheets', 'budget') }}
     ),
 
-renamed_casted AS (
+--Creamos la vista --
+budget AS (
     SELECT
-          _row
+          _row as budget_id
         , product_id
-        , month as date_id
-        , quantity 
-        , _fivetran_synced
-    FROM stg_budget
+        , quantity
+        , year(month)*100+month(month) as id_anio_mes_budget
+        , _fivetran_synced 
+    FROM src_budget_products
     )
 
-SELECT * FROM renamed_casted
+SELECT * FROM budget
 
 {% if is_incremental() %}
 
-  where _fivetran_synced > (select max(_fivetran_synced) from {{ this }})
+  where _fivetran_synced  > (select max(_fivetran_synced ) from {{ this }})
 
 {% endif %}
