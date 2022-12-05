@@ -5,44 +5,44 @@ models:
     description: ""
     columns:
       - name: user_id
-        description: "identificador usuario"
+        description: "Identificador usuario"
         tests:
           - unique
           - not_null
 
       - name: first_name
-        description: "nombre usuario"
+        description: "Nombre usuario"
         tests:
           - not_null
 
       - name: last_name
-        description: "primero apellido del usuario"
+        description: "Primer apellido del usuario"
 
       - name: address_id
-        description: "identificador de la direccion del usuario"
+        description: "Identificador de la direccion del usuario"
         tests:
           - relationships:
               to: ref('stg_sql_server_dbo_addresses')
               field: address_id
 
       - name: phone_number
-        description: ""
+        description: "Numero de telefono del usuario"
 
       - name: email
-        description: ""
+        description: "Email del usuario"
 
       - name: created_at
-        description: ""
+        description: "Fecha de creacion del usuario"
         tests:
 
       - name: updated_at
-        description: ""
+        description: "Ultima fecha de modificacion del usuario"
 
       - name: data_removed
-        description: ""
+        description: "Si el dato ha sido borrado o no"
 
       - name: date_load
-        description: ""
+        description: "Fecha de "
   
   - name: stg_sql_server_dbo_promos
     description: ""

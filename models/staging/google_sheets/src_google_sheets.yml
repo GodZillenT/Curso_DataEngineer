@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: google_sheets
+    description: ""
+    schema: google_sheets 
+    database: |
+        {%- if  target.name == 'user_dev' -%} dev_bronze_db_alumno21
+        {%- elif target.name == 'ci' -%} pro_bronze_db_alumno21 
+        {%- elif target.name == 'pro'-%} pro_bronze_db_alumno21  
+        {%- else -%} {{target.database}}_bronze_db_alumno21
+        {%- endif -%}
+    tables:
+      - name: budget
+        description: "Tabla de presupuestos para los diferentes productos en un mes concreto"
+        columns:
+          - name: _row
+            description: "Numero de fila que identifica al presupuesto"    
+            tests: 
+              - not_null
+              - unique
+          - name: product_id
+            description: "Identificador del producto"
+            tests:
+              - not_null
+          - name: quantity
+            description: "Cantidad del producto que se espera vender"
+            tests:
+             - not_null
+             - positive_values
+          - name: month
+            description: "Mes del que queremos saber su presupuesto"
+            tests:
+              - not_null
+          - name: _fivetran_synced
+            description: "Campo proveniente de fivetran que nos permite saber la ultima fecha de actualizacion de los datos"
