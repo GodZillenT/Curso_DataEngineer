@@ -1,6 +1,6 @@
-WITH fct_orders AS (
+WITH fct_orders_products AS (
     SELECT * 
-    FROM {{ ref('fct_orders') }}
+    FROM {{ ref('fct_orders_products') }}
 ),
 
 dim_tiempo_dia AS(
@@ -28,9 +28,9 @@ renamed_casted as(
         tracking_id,
         shipping_service,
         delivered_at
-    FROM fct_orders O
+    FROM fct_orders_products O
     JOIN dim_tiempo_dia T
-    ON O.CREATED_AT = T.ID_FECHA
+    ON O.CREATED_AT = T.date_id
 )
 
 SELECT * FROM renamed_casted

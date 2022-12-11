@@ -42,10 +42,10 @@ models:
         description: "Si el dato ha sido borrado o no"
 
       - name: date_load
-        description: "Fecha de "
+        description: "Fecha de ultima actualizacion de los datos"
   
   - name: stg_sql_server_dbo_promos
-    description: ""
+    description: "Staging con informacion acerca de las promociones aplicables en pedidos"
     columns:
       - name: promo_id
         description: "identificador hasheado con md5 para el identificador de promo"
@@ -55,6 +55,9 @@ models:
 
       - name: promo_name
         description: "nombre de la promocion"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: varchar 
 
       - name: status
         description: "si esta activa o no la promocion"
@@ -63,10 +66,10 @@ models:
         description: "el descuento que aplica a esa promocion"
 
       - name: data_removed
-        description: ""
+        description: "Campo para saber si el campo ha sido borrado"
 
       - name: date_load
-        description: ""
+        description: "Fecha que dice cuando se cargaron los datos"
   
   - name: stg_sql_server_dbo_products
     description: ""
@@ -75,162 +78,162 @@ models:
         description: "identificador producto"
 
       - name: name
-        description: ""
+        description: "Nombre del producto"
 
       - name: price_usd
-        description: "precio en dolares"
+        description: "Precio en dolares"
 
       - name: inventory
-        description: ""
+        description: "Stock del producto"
 
       - name: data_remove
-        description: ""
+        description: "Campo para saber si el campo ha sido borrado"
 
       - name: date_load
-        description: ""
+        description: "Fecha que dice cuando se cargaron los datos"
 
   - name: stg_sql_server_dbo_addresses
     description: ""
     columns:
       - name: address_id
-        description: ""
+        description: "Id de la direccion"
 
       - name: address
-        description: ""
+        description: "Varchar de la direccion"
 
       - name: zipcode
-        description: ""
+        description: "Codigo postal de la direccion"
 
       - name: country
-        description: ""
+        description: "Pais"
 
       - name: state
-        description: ""
+        description: "Estado al que pertenece esa direccion"
 
       - name: data_removed
-        description: ""
+        description: "Campo para saber si el campo ha sido borrado"
 
       - name: date_load
-        description: ""
+        description: "Fecha que dice cuando se cargaron los datos"
 
   - name: stg_sql_server_dbo_order_items
-    description: ""
+    description: "Linea de producto para un pedido"
     columns:
       - name: order_id
-        description: ""
+        description: "Id del pedido"
 
       - name: product_id
-        description: ""
+        description: "Id del producto"
         tests:
           - relationships:
               to: ref('stg_sql_server_dbo_products')
               field: product_id
 
       - name: quantity
-        description: ""
+        description: "Cantidad del producto en pedido"
         tests:
           - positive_values
 
       - name: data_removed
-        description: ""
+        description: "Campo para saber si el campo ha sido borrado"
 
       - name: date_load
-        description: ""
+        description: "Fecha que dice cuando se cargaron los datos"
 
   - name: stg_sql_server_dbo_events
-    description: ""
+    description: "Staging con informacion de los distintos eventos producidos"
     columns:
       - name: event_id
-        description: ""
+        description: "Id del evento"
 
       - name: user_id
-        description: ""
+        description: "Id del usuario asociado a ese evento"
         tests:
           - relationships:
               to: ref('stg_sql_server_dbo_users')
               field: user_id
 
       - name: product_id
-        description: ""
+        description: "Id del producto asociado al evento, cuando este sea el de añadir al carrito (no siempre el evento tendrá un producto)"
 
       - name: session_id
-        description: ""
+        description: "Id de la session"
 
       - name: event_type
         description: ""
 
       - name: page_url
-        description: ""
+        description: "Url de la pagina"
 
       - name: created_at
-        description: ""
+        description: "Cuando se produjo el evento"
 
       - name: data_removed
-        description: ""
+        description: "Campo para saber si el campo ha sido borrado"
 
       - name: date_load
-        description: ""
+        description: "Fecha que dice cuando se cargaron los datos"
 
   - name: stg_sql_server_dbo_orders
-    description: ""
+    description: "Staging de la tabla de hechos de pedidos"
     columns:
       - name: order_id
-        description: ""
+        description: "Id del pedido"
         tests:
         - relationships:
             to: ref('stg_sql_server_dbo_order_items')
             field: order_id
 
       - name: user_id
-        description: ""
+        description: "Id del usuario asociado al pedido"
         tests:
         - relationships:
             to: ref('stg_sql_server_dbo_users')
             field: user_id
 
       - name: address_id
-        description: ""
+        description: "Id de la direccion del usuario"
         tests:
         - relationships:
             to: ref('stg_sql_server_dbo_addresses')
             field: address_id
 
       - name: tracking_id
-        description: ""
+        description: "Id del tracking del pedido"
 
       - name: status
-        description: ""
+        description: "Estado del pedido"
 
       - name: promo_id
-        description: ""
+        description: "Id de la promo aplicada al pedido"
         tests:
         - relationships:
             to: ref('stg_sql_server_dbo_promos')
             field: promo_id
 
       - name: created_at
-        description: ""
+        description: "Fecha de creacion del pedido"
 
       - name: delivered_at
-        description: ""
+        description: "Fecha de entrega del pedido"
 
       - name: estimated_delivery_at
-        description: ""
+        description: "Fecha de estimacion de entrega del pedido"
 
       - name: shipping_service
-        description: ""
+        description: "Empresa que va a entregar el pedido"
 
       - name: shipping_cost
-        description: "pasa a ser numeric"
+        description: "Coste del envio"
 
       - name: order_cost
-        description: "pasa a ser numeric"
+        description: "Coste del pedido"
 
       - name: order_total
-        description: "pasa a ser numeric"
+        description: "Coste total del pedido, sumando coste del envio y coste del pedido."
 
       - name: data_removed
-        description: ""
-
+        description: "Campo para saber si el campo ha sido borrado"
+        
       - name: date_load
-        description: ""
+        description: "Fecha que dice cuando se cargaron los datos"

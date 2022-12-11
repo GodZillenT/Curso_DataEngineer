@@ -13,7 +13,7 @@ renamed_casted as(
     select
          _row
         , product_id
-        , date_id
+        , id_anio_mes_budget
         , anio
         , mes
         , desc_mes
@@ -21,10 +21,10 @@ renamed_casted as(
         , semestre
         , cuatrimestre
         , quantity 
-        , date_load
+        , _fivetran_synced
     FROM fct_budget B
     JOIN dim_tiempo_mes T
-    ON B.date_id = T.id_anio_mes
+    ON B.id_anio_mes_budget = T.id_anio_mes
 )
 
 SELECT * FROM renamed_casted

@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_google_sheets_budget
+    description: "Staging de la tabla de hechos de budget, con informacion de la venta que se estima para cada producto"
+    columns:
+      - name: budget_id
+        description: "Id presupuesto"    
+      - name: product_id
+        description: "Identificador del producto"
+      - name: quantity
+        description: "Cantidad del producto que se espera vender"
+      - name: id_anio_mes_budget
+        description: "Id que identifica el año y mes del presupuesto"
+        tests:
+          - not_null
+      - name: _fivetran_synced
+        description: "Campo proveniente de fivetran que nos permite saber la ultima fecha de actualizacion de los datos"

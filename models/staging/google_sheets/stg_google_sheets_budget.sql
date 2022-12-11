@@ -12,7 +12,7 @@ WITH src_budget_products AS (
 --Creamos la vista --
 budget AS (
     SELECT
-          _row as budget_id
+          budget_id
         , product_id
         , quantity
         , year(month)*100+month(month) as id_anio_mes_budget

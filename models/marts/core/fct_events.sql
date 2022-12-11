@@ -1,3 +1,9 @@
+{{ config(
+    materialized='incremental',
+    unique_key = 'event_id'
+    ) 
+    }}
+
 
 WITH stg_events AS (
     SELECT * 
@@ -21,3 +27,10 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
+
+
+{% if is_incremental() %}
+
+  where date_load  > (select max(date_load ) from {{ this }})
+
+{% endif %}
