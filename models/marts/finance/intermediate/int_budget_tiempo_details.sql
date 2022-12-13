@@ -11,7 +11,7 @@ dim_tiempo_mes AS(
 
 renamed_casted as(
     select
-         _row
+         budget_id
         , product_id
         , id_anio_mes_budget
         , anio
@@ -21,7 +21,7 @@ renamed_casted as(
         , semestre
         , cuatrimestre
         , quantity 
-        , _fivetran_synced
+        , date_load
     FROM fct_budget B
     JOIN dim_tiempo_mes T
     ON B.id_anio_mes_budget = T.id_anio_mes

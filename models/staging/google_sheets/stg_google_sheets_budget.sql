@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key = '_row'
+    unique_key = 'budget_id'
     ) 
     }}
 --Creamos la tabla CTE desde donde accede a los datos--
@@ -16,7 +16,7 @@ budget AS (
         , product_id
         , quantity
         , year(month)*100+month(month) as id_anio_mes_budget
-        , _fivetran_synced 
+        , _fivetran_synced as date_load
     FROM src_budget_products
     )
 
@@ -24,6 +24,6 @@ SELECT * FROM budget
 
 {% if is_incremental() %}
 
-  where _fivetran_synced  > (select max(_fivetran_synced ) from {{ this }})
+  where date_load  > (select max(date_load ) from {{ this }})
 
 {% endif %}

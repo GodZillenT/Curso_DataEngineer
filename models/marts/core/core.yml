@@ -31,10 +31,11 @@ models:
         description: "Id que identifica el tipo de evento"
         tests:
           - relationships:
-              to: ref('sql_server_dbo', 'orders')
-              field: order_id
+              to: ref('fct_events', 'type_event_id')
+              field: type_event_id
       - name: event_type
         description: "Nombre del tipo de evento"
+
 
   - name: dim_products
     description: "Dimension con los detalles de cada producto"
@@ -99,19 +100,19 @@ models:
         description: "Descripcion del dia de la semana"
 
       - name: dia_previo
-        description: ""
+        description: "Dia previo"
 
       - name: anio_semana_dia
-        description: ""
+        description: "Numero generado con el año, la semana y el dia"
 
       - name: semana
-        description: ""
+        description: "Semana del año"
 
       - name: semestre
-        description: ""
+        description: "Semestre del año"
 
       - name: cuatrimestre
-        description: ""
+        description: "Cuatrimestre del año"
 
   - name: dim_tiempo_mes
     description: "Dimension creada con el macro date spine con granularidad de mes para la tabla de hechos budget"
@@ -120,7 +121,7 @@ models:
         description: "Id que identifica de manera unica a la tabla"
 
       - name: semana
-        description: "Semanal del año"
+        description: "Semana del año"
 
       - name: anio
         description: "Año"
@@ -168,8 +169,8 @@ models:
   - name: fct_budget
     description: "Tabla de hechos referente al presupuesto mensual para cada producto"
     columns:
-      - name: _row
-        description: ""
+      - name: budget_id
+        description: "Id de la tabla de hechos budget"
 
       - name: product_id
         description: "Identificador del producto"
@@ -180,7 +181,7 @@ models:
       - name: quantity
         description: "Cantidad del producto que se espera vender"
 
-      - name: _fivetran_synced
+      - name: date_load
         description: "Campo proveniente de fivetran que nos permite saber la ultima fecha de actualizacion de los datos"
   - name: fct_events
     description: "Tabla de hechos referente a los eventos que se van generando"
@@ -217,7 +218,10 @@ models:
     description: ""
     columns:
       - name: order_product_pk
-        description: "Clave primaria generada como un hash a partir de "
+        description: "Clave primaria generada como un hash a partir de concatenar order_id y product_id "
+        tests:
+          - unique
+          - not_null
 
       - name: order_id
         description: "Id del pedido"

@@ -8,8 +8,13 @@ models:
         description: "Id presupuesto"    
       - name: product_id
         description: "Identificador del producto"
+        tests:
+          - not_null
       - name: quantity
         description: "Cantidad del producto que se espera vender"
+        tests:
+          - not_null
+          - positive_values
       - name: id_anio_mes_budget
         description: "Id que identifica el año y mes del presupuesto"
         tests:
