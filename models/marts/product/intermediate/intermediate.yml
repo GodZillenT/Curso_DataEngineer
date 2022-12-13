@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: int_events_type
+    description: "Tabla intermedia que une la dimension event_type con su tabla de hechos events "
+    columns:
+      - name: event_id
+        description: "Id del evento"
+
+      - name: user_id
+        description: "Id del usuario que genera el evento"
+
+      - name: session_id
+        description: "Id de la sesion"
+
+      - name: page_url
+        description: "Url de la pagina en la que se produce el evento"
+
+      - name: type_event_id
+        description: "Id para el tipo de evento"
+
+      - name: created_at
+        description: "Fecha de creacion del evento"
+
+      - name: event_type
+        description: "Tipo de evento"

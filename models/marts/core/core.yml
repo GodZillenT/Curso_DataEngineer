@@ -1,0 +1,276 @@
+version: 2
+
+models:
+  - name: dim_addresses
+    description: ""
+    columns:
+      - name: address_id
+        description: "Id de la direccion"
+
+      - name: address
+        description: "Varchar de la direccion"
+
+      - name: zipcode
+        description: "Codigo postal de la direccion"
+
+      - name: country
+        description: "Pais"
+
+      - name: state
+        description: "Estado al que pertenece esa direccion"
+
+      - name: data_removed
+        description: "Campo para saber si el campo ha sido borrado"
+
+      - name: date_load
+        description: "Fecha que dice cuando se cargaron los datos"
+  - name: dim_event_type
+    description: "Dimension que indica el tipo de evento de la tabla de hechos de events"
+    columns:
+      - name: type_event_id
+        description: "Id que identifica el tipo de evento"
+        tests:
+          - relationships:
+              to: ref('sql_server_dbo', 'orders')
+              field: order_id
+      - name: event_type
+        description: "Nombre del tipo de evento"
+
+  - name: dim_products
+    description: "Dimension con los detalles de cada producto"
+    columns:
+      - name: product_id
+        description: "identificador producto"
+
+      - name: name
+        description: "Nombre del producto"
+
+      - name: price_usd
+        description: "Precio en dolares"
+
+      - name: inventory
+        description: "Stock del producto"
+
+      - name: data_remove
+        description: "Campo para saber si el campo ha sido borrado"
+
+      - name: date_load
+        description: "Fecha que dice cuando se cargaron los datos"
+  - name: dim_promos
+    description: "Dimension con la informacion de las distintas promos"
+    columns:
+      - name: promo_id
+        description: "identificador hasheado con md5 para el identificador de promo"
+
+      - name: promo_name
+        description: "nombre de la promocion"
+
+      - name: status
+        description: "si esta activa o no la promocion"
+
+      - name: discount
+        description: "el descuento que aplica a esa promocion"
+
+      - name: data_removed
+        description: "Campo para saber si el campo ha sido borrado"
+
+      - name: date_load
+        description: "Fecha que dice cuando se cargaron los datos"  
+
+  - name: dim_tiempo_dia
+    description: "Dimension con detalles de tiempo y granularidad de dia"
+    columns:
+      - name: date_id
+        description: "Id de la fecha"
+
+      - name: anio
+        description: "Int del año"
+
+      - name: mes
+        description: "Numero de mes"
+
+      - name: desc_mes
+        description: "Descripcion del mes"
+
+      - name: dia
+        description: "Dia del mes"
+
+      - name: dia_semana
+        description: "Descripcion del dia de la semana"
+
+      - name: dia_previo
+        description: ""
+
+      - name: anio_semana_dia
+        description: ""
+
+      - name: semana
+        description: ""
+
+      - name: semestre
+        description: ""
+
+      - name: cuatrimestre
+        description: ""
+
+  - name: dim_tiempo_mes
+    description: "Dimension creada con el macro date spine con granularidad de mes para la tabla de hechos budget"
+    columns:
+      - name: id_anio_mes
+        description: "Id que identifica de manera unica a la tabla"
+
+      - name: semana
+        description: "Semanal del año"
+
+      - name: anio
+        description: "Año"
+
+      - name: mes
+        description: "Mes del año"
+
+      - name: desc_mes
+        description: "Descripcion del mes"
+
+      - name: semestre
+        description: "Semestre del año"
+
+      - name: cuatrimestre
+        description: "Cuatrimestre del año" 
+  - name: dim_users
+    description: ""
+    columns:
+      - name: user_id
+        description: "Identificador usuario"
+
+      - name: first_name
+        description: "Nombre usuario"
+
+      - name: last_name
+        description: "Primer apellido del usuario"
+
+      - name: email
+        description: "Email del usuario"
+
+      - name: phone_number
+        description: "Numero de telefono del usuario"
+
+      - name: address_id
+        description: "Identificador de la direccion del usuario"
+
+      - name: created_at
+        description: "Fecha de creacion del usuario"
+
+      - name: updated_at
+        description: "Ultima fecha de modificacion del usuario"
+
+      - name: date_load
+        description: "Fecha de ultima actualizacion de los datos"
+  - name: fct_budget
+    description: "Tabla de hechos referente al presupuesto mensual para cada producto"
+    columns:
+      - name: _row
+        description: ""
+
+      - name: product_id
+        description: "Identificador del producto"
+
+      - name: id_anio_mes_budget
+        description: "Id que identifica el año y mes del presupuesto"
+
+      - name: quantity
+        description: "Cantidad del producto que se espera vender"
+
+      - name: _fivetran_synced
+        description: "Campo proveniente de fivetran que nos permite saber la ultima fecha de actualizacion de los datos"
+  - name: fct_events
+    description: "Tabla de hechos referente a los eventos que se van generando"
+    columns:
+      - name: event_id
+        description: "Id del evento"
+
+      - name: user_id
+        description: "Id del usuario asociado a ese evento"
+
+      - name: product_id
+        description: "Id del producto asociado al evento, cuando este sea el de añadir al carrito (no siempre el evento tendrá un producto)"
+
+      - name: session_id
+        description: "Id de la session"
+
+      - name: type_event_id
+        description: ""
+
+      - name: page_url
+        description: "Url de la pagina"
+
+      - name: created_at
+        description: "Cuando se produjo el evento"
+
+      - name: data_removed
+        description: "Campo para saber si el campo ha sido borrado"
+
+      - name: date_load
+        description: "Fecha que dice cuando se cargaron los datos"
+  
+models:
+  - name: fct_orders_products
+    description: ""
+    columns:
+      - name: order_product_pk
+        description: "Clave primaria generada como un hash a partir de "
+
+      - name: order_id
+        description: "Id del pedido"
+
+      - name: product_id
+        description: "identificador producto"
+
+      - name: user_id
+        description: "Id del usuario asociado al pedido"
+
+      - name: promo_id
+        description: "identificador hasheado con md5 para el identificador de promo"
+
+      - name: address_id
+        description: "Id de la direccion del usuario"
+
+      - name: created_at
+        description: "Fecha de creacion del pedido"
+
+      - name: status_order
+        description: "Estado del pedido"
+
+      - name: shipping_service
+        description: "Empresa que va a entregar el pedido"
+
+      - name: shipping_header_cost
+        description: "Coste del envio para esa linea de pedido"
+
+      - name: quantity
+        description: "Cantidad del producto en pedido"
+
+      - name: order_header_cost
+        description: "Coste de esa linea de pedido sin sumar el coste del envio"
+
+      - name: order_header_total_cost
+        description: "Coste total de esa linea de pedido"
+
+      - name: tracking_id
+        description: "Id del tracking del pedido"
+
+      - name: estimated_delivery_at
+        description: "Fecha de estimacion de entrega del pedido"
+
+      - name: delivered_at
+        description: "Fecha de entrega del pedido"
+
+      - name: days_to_deliver
+        description: "Dias que se ha tardado en entregar el pedido"
+
+      - name: data_removed
+        description: "Campo para saber si el campo ha sido borrado"
+
+      - name: date_load
+        description: "Fecha que dice cuando se cargaron los datos"
+  
+  

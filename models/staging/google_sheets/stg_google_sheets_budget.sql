@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key = 'budget_id'
+    unique_key = '_row'
     ) 
     }}
 --Creamos la tabla CTE desde donde accede a los datos--

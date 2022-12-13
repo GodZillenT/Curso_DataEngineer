@@ -58,6 +58,12 @@ models:
         {%- endif -%}
       core:
         +schema: core
+        
+      intermediate:
+        +materialized: view
+        +schema: intermediate
+      finance:
+        +schema: finance    
       product:
         +schema: product
       marketing:
