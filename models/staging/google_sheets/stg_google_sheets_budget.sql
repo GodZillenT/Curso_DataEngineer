@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key = 'budget_id'
+    unique_key = '_row'
     ) 
     }}
 --Creamos la tabla CTE desde donde accede a los datos--
@@ -12,7 +12,7 @@ WITH src_budget_products AS (
 --Creamos la vista --
 budget AS (
     SELECT
-          budget_id
+          _row as budget_id
         , product_id
         , quantity
         , year(month)*100+month(month) as id_anio_mes_budget

@@ -193,10 +193,6 @@ models:
 
       - name: address_id
         description: "Id de la direccion del usuario"
-        tests:
-        - relationships:
-            to: ref('stg_sql_server_dbo_addresses')
-            field: address_id
 
       - name: tracking_id
         description: "Id del tracking del pedido"

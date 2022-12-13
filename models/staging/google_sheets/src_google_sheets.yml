@@ -18,7 +18,6 @@ sources:
             description: "Numero de fila que identifica al presupuesto"    
             tests: 
               - not_null
-              - unique
           - name: product_id
             description: "Identificador del producto"
             tests:
