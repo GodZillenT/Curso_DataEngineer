@@ -34,8 +34,8 @@ usuario_orders as(
         ,A.state
         ,A.country
         ,COUNT(order_id) as TOTAL_NUMBER_ORDERS
-        ,SUM(order_total) as TOTAL_ORDER_COST_USD
-        ,SUM(shipping_cost) as TOTAL_SHIPPING_COST_USD
+        ,SUM(order_header_total_cost) as TOTAL_ORDER_COST_USD
+        ,SUM(shipping_header_cost) as TOTAL_SHIPPING_COST_USD
         ,SUM(P.discount) as TOTAL_DISCOUNT_USD
         ,SUM(quantity) as TOTAL_QUANTITY_PRODUCT
         ,COUNT(distinct product_id) as TOTAL_DIFFERENT_PRODUCTS
