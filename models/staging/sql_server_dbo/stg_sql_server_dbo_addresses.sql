@@ -19,4 +19,4 @@ renamed as (
 
 )
 
-select * from renamed where address_id != '1'
+select * from renamed 
