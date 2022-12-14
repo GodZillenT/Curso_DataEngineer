@@ -37,6 +37,7 @@ usuario_orders as(
         ,SUM(order_header_total_cost) as TOTAL_ORDER_COST_USD
         ,SUM(shipping_header_cost) as TOTAL_SHIPPING_COST_USD
         ,SUM(P.discount) as TOTAL_DISCOUNT_USD
+        ,AVG(order_header_total_cost) AVG_ORDER_COST
         ,SUM(quantity) as TOTAL_QUANTITY_PRODUCT
         ,COUNT(distinct product_id) as TOTAL_DIFFERENT_PRODUCTS
         FROM dim_users U
